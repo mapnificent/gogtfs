@@ -13,7 +13,7 @@ import (
 )
 
 // node_capacity is the maximum number of points allowed in a quadtree node
-var node_capacity int = 4
+var node_capacity int = 32
 
 // AABB represents an Axis-Aligned bounding box structure with center and half
 // dimension
