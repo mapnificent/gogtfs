@@ -52,6 +52,10 @@ func (c *StopCollection) SetStop(id string, stop *Stop) {
 	c.minLon = math.Min(c.minLon, stop.Lon)
 }
 
+func (c *StopCollection) SetQuadtree(qt *QuadTree) {
+	c.qt = qt
+}
+
 func (c *StopCollection) createQuadtree() {
 	c.qt = CreateQuadtree(c.minLat, c.maxLat, c.minLon, c.maxLon)
 	for _, stop := range c.Stops {
