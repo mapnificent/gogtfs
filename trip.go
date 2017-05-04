@@ -203,7 +203,7 @@ func (t *Trip) AddStopTime(newStopTime *StopTime) {
 			t.StopTimes = append(t.StopTimes, newStopTime)
 		} else {
 			// Otherwise rebuild new array, inserting the new stop time at right time
-			newStopTimes := make([]*StopTime, stopTimesLength+1)
+			newStopTimes := make([]*StopTime, 0, stopTimesLength+1)
 			hasAppendedNewStopTime := false
 			for _, existingStopTime := range t.StopTimes {
 				if existingStopTime != nil {
