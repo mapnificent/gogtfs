@@ -130,6 +130,10 @@ func (st *StopTime) setField(fieldName, val string) {
 		st.Trip = st.feed.Trips[val]
 		break
 	case "arrival_time":
+		if len(val) == 0 {
+			st.ArrivalInterpolated = true
+			break
+		}
 		v, err := timeOfDayStringToSeconds(val)
 		if err != nil {
 			panic(err.Error() + val)
@@ -137,6 +141,10 @@ func (st *StopTime) setField(fieldName, val string) {
 		st.ArrivalTime = v
 		break
 	case "departure_time":
+		if len(val) == 0 {
+			st.DepartureInterpolated = true
+			break
+		}
 		v, err := timeOfDayStringToSeconds(val)
 		if err != nil {
 			panic(err)

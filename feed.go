@@ -381,6 +381,10 @@ func (feed *Feed) parseTxtFile(reader io.Reader, fileName string) (err error) {
 		if err != nil {
 			return
 		}
+		for _, t := range feed.Trips {
+			t.InterpolateStopTimes()
+		}
+
 		break
 
 	case "calendar.txt":

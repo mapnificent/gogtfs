@@ -145,6 +145,48 @@ func (t *Trip) RunsAccross(stop *Stop) bool {
 	return false
 }
 
+func (t *Trip) InterpolateStopTimes() {
+	// Go through stoptime sequence
+	// remember time of last valid arrival/departure
+	// remember position of first missing arrival/departure
+	// interpolate when next valid arrival/departure is found
+	firstArrivalMissing := -1
+	firstDepartureMissing := -1
+	var lastArrival, lastDeparture uint
+
+	for i, st := range t.StopTimes {
+		if !st.ArrivalInterpolated {
+			if firstArrivalMissing != -1 {
+				avgTime := uint((st.ArrivalTime - lastArrival) / uint(i-firstArrivalMissing+1))
+				for j := firstArrivalMissing; j < i; j += 1 {
+					t.StopTimes[j].ArrivalTime = lastArrival + avgTime*uint(j-firstArrivalMissing+1)
+				}
+				firstArrivalMissing = -1
+			}
+			lastArrival = st.ArrivalTime
+		} else {
+			if firstArrivalMissing == -1 {
+				firstArrivalMissing = i
+			}
+		}
+
+		if !st.DepartureInterpolated {
+			if firstDepartureMissing != -1 {
+				avgTime := uint((st.DepartureTime - lastDeparture) / uint(i-firstDepartureMissing+1))
+				for j := firstDepartureMissing; j < i; j += 1 {
+					t.StopTimes[j].DepartureTime = lastDeparture + avgTime*uint(j-firstDepartureMissing+1)
+				}
+				firstDepartureMissing = -1
+			}
+			lastDeparture = st.DepartureTime
+		} else {
+			if firstDepartureMissing == -1 {
+				firstDepartureMissing = i
+			}
+		}
+	}
+}
+
 // AddStopTime adds StopTime to trip.StopTimes with respect to the stop_sequence order
 func (t *Trip) AddStopTime(newStopTime *StopTime) {
 	if t.StopTimes == nil {
