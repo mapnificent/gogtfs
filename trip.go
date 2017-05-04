@@ -21,7 +21,7 @@ type Trip struct {
 
 	// service_id - Required. The service_id contains an ID that uniquely identifies a set of dates when service
 	// is available for one or more routes. This value is referenced from the calendar.txt or calendar_dates.txt file.
-	serviceId string
+	ServiceId string
 
 	// trip_id	- Required. The trip_id field contains an ID that identifies a trip. The trip_id is dataset unique.
 	Id string
@@ -220,13 +220,13 @@ func (t *Trip) HasShape() bool {
 func (t *Trip) RunsOn(date *time.Time) (runs bool) {
 	runs = false // Unnecessary, default init to false, no?
 	intdate, _ := strconv.Atoi(fmt.Sprintf("%04d", date.Year()) + fmt.Sprintf("%02d", date.Month()) + fmt.Sprintf("%02d", date.Day()))
-	if calendar, ok := t.feed.Calendars[t.serviceId]; ok {
+	if calendar, ok := t.feed.Calendars[t.ServiceId]; ok {
 		if calendar.ValidOn(intdate, date) {
 			runs = true
 		}
 	}
 
-	if calendardates, ok := t.feed.CalendarDates[t.serviceId]; ok {
+	if calendardates, ok := t.feed.CalendarDates[t.ServiceId]; ok {
 		// log.Println("calendardates", calendardates)
 		for _, cd := range calendardates {
 			if exceptionOnDay, shouldRun := cd.ExceptionOn(intdate); exceptionOnDay {
@@ -253,7 +253,7 @@ func (t *Trip) setField(fieldName, val string) {
 		t.Route = t.feed.Routes[val]
 		break
 	case "service_id":
-		t.serviceId = val
+		t.ServiceId = val
 		break
 	case "trip_headsign":
 		t.Headsign = val
