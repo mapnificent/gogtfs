@@ -6,16 +6,15 @@ import (
 )
 
 type StopDistanceResult struct {
-	Stop   *Stop
+	Stop     *Stop
 	Distance float64
 }
 
 type StopDistanceResults []*StopDistanceResult
 
-func (s StopDistanceResults) Len() int      { return len(s) }
-func (s StopDistanceResults) Swap(i, j int) { s[i], s[j] = s[j], s[i] }
+func (s StopDistanceResults) Len() int           { return len(s) }
+func (s StopDistanceResults) Swap(i, j int)      { s[i], s[j] = s[j], s[i] }
 func (s StopDistanceResults) Less(i, j int) bool { return s[i].Distance < s[j].Distance }
-
 
 type StopCollection struct {
 	Stops  map[string]*Stop

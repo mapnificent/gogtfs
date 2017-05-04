@@ -10,7 +10,7 @@ import (
 // calendar.txt
 type Calendar struct {
 
-	// service_id - Required. The service_id contains an ID that uniquely identifies a set of dates when service is 
+	// service_id - Required. The service_id contains an ID that uniquely identifies a set of dates when service is
 	// available for one or more routes. Each service_id value can appear at most once in a calendar.txt file. This
 	// value is dataset unique. It is referenced by the trips.txt file.
 	serviceId string

@@ -20,7 +20,7 @@ type FareAttribute struct {
 	// price - Required. The price field contains the fare price, in the unit specified by currency_type.
 	Price float64
 
-	// currency_type - Required. The currency_type field defines the currency used to pay the fare. Please use the ISO 4217 alphabetical 
+	// currency_type - Required. The currency_type field defines the currency used to pay the fare. Please use the ISO 4217 alphabetical
 	// currency codes which can be found at the following URL: http://www.iso.org/iso/en/prods-services/popstds/currencycodeslist.html.
 	CurrencyType float64
 
@@ -39,8 +39,8 @@ type FareAttribute struct {
 	Transfers byte
 
 	// transfer_duration - Optional. The transfer_duration field specifies the length of time in seconds before a transfer expires.
-	// When used with a transfers value of 0, the transfer_duration field indicates how long a ticket is valid for a fare where no transfers 
-	// are allowed. Unless you intend to use this field to indicate ticket validity, transfer_duration should be omitted or empty when transfers 
+	// When used with a transfers value of 0, the transfer_duration field indicates how long a ticket is valid for a fare where no transfers
+	// are allowed. Unless you intend to use this field to indicate ticket validity, transfer_duration should be omitted or empty when transfers
 	// is set to 0.
 	TransferDuration int
 

@@ -10,7 +10,6 @@ import (
 	// "runtime"
 	// "bufio"
 	"time"
-
 	// "fmt"
 	// "strings"
 )
@@ -287,7 +286,7 @@ func (feed *Feed) openAndParseTxtFile(basePath, fileName string) (err error) {
 	// 		}
 	// 		_, p, err = r.ReadLine()
 	// 	}
-	// 
+	//
 	// 	feed.StopTimes = make([]*StopTime, count-1, count)
 	// }
 
