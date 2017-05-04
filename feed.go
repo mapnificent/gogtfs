@@ -27,6 +27,7 @@ type Feed struct {
 	Calendars        map[string]*Calendar
 	CalendarDates    map[string][]*CalendarDate
 	Loaded           bool
+	RoutingOnly      bool
 	StopTimesCount   int
 	TranfersCount    int
 	FrequenciesCount int
@@ -35,6 +36,7 @@ type Feed struct {
 var RequiredFiles = []string{"agency.txt", "stops.txt", "routes.txt", "trips.txt", "stop_times.txt"}
 var RequiredEitherCalendarFiles = []string{"calendar.txt", "calendar_dates.txt"}
 var AllFiles = []string{"agency.txt", "stops.txt", "routes.txt", "trips.txt", "stop_times.txt", "calendar.txt", "calendar_dates.txt", "fare_attributes.txt", "fare_rules.txt", "shapes.txt", "frequencies.txt", "transfers.txt"}
+var RoutingFiles = []string{"agency.txt", "stops.txt", "routes.txt", "trips.txt", "stop_times.txt", "calendar.txt", "calendar_dates.txt", "frequencies.txt", "transfers.txt"}
 
 func NewFeed(path string) (*Feed, error) {
 
@@ -49,6 +51,7 @@ func NewFeed(path string) (*Feed, error) {
 		Calendars:      make(map[string]*Calendar),
 		CalendarDates:  make(map[string][]*CalendarDate),
 		Loaded:         false,
+		RoutingOnly:    false,
 	}
 
 	return feed, nil
@@ -71,6 +74,12 @@ func (f *Feed) Load() error {
 		return nil
 	}
 
+	filenames := AllFiles
+	if f.RoutingOnly {
+		filenames = RoutingFiles
+	}
+
+	log.Println("Parsing", f.path)
 	if filepath.Ext(f.path) == ".zip" {
 
 		zipReader, err := zip.OpenReader(f.path)
@@ -84,7 +93,7 @@ func (f *Feed) Load() error {
 
 		// Sort for loading dependencies
 		fileIndexes := make([]int, len(zipReader.File))
-		for _, f := range AllFiles[:] {
+		for _, f := range filenames[:] {
 			for i, zf := range zipReader.File[:] {
 				if zf.FileHeader.Name == f {
 					fileIndexes = append(fileIndexes, i)
@@ -107,7 +116,7 @@ func (f *Feed) Load() error {
 		}
 
 	} else {
-		for i, fileName := range AllFiles[:] {
+		for i, fileName := range filenames[:] {
 			err := f.openAndParseTxtFile(f.path, fileName)
 			if err != nil {
 				if i < len(RequiredFiles) {
