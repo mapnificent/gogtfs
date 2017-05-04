@@ -460,9 +460,13 @@ func (feed *Feed) parseTxtFile(reader io.Reader, fileName string) (err error) {
 			transfer := new(Transfer)
 			transfer.feed = feed
 			fieldsSetter(transfer, k, v)
-			// log.Println("  - transfer:", transfer)
-			feed.StopCollection.Stop(transfer.FromStopId).Transfers[transfer.ToStopId] = transfer
-			feed.TranfersCount = feed.TranfersCount + 1
+			fromStop := feed.StopCollection.Stop(transfer.FromStopId)
+			if fromStop != nil {
+				fromStop.Transfers[transfer.ToStopId] = transfer
+				feed.TranfersCount = feed.TranfersCount + 1
+			} else {
+				log.Println("Ignoring bad transfer:", transfer)
+			}
 		})
 		if err != nil {
 			return
