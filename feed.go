@@ -128,16 +128,16 @@ func (f *Feed) Load() error {
 
 	// Color field copy from Routes to Shapes for json export
 	// And calculate the DayRange for each trip
-	bench("Trips calculations", func() interface{} {
-		for _, trip := range f.Trips {
-			trip.copyColorToShape()
-			trip.calculateDayTimeRange()
-			for _, freq := range trip.Frequencies {
-				freq.calculateDayTimeRange()
-			}
-		}
-		return "yes"
-	})
+	// bench("Trips calculations", func() interface{} {
+	// 	for _, trip := range f.Trips {
+	// 		trip.copyColorToShape()
+	// 		trip.calculateDayTimeRange()
+	// 		for _, freq := range trip.Frequencies {
+	// 			freq.calculateDayTimeRange()
+	// 		}
+	// 	}
+	// 	return "yes"
+	// })
 
 	if len(f.Agencies) == 0 {
 		return errors.New("A feed needs a least one agency !")
