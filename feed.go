@@ -465,7 +465,7 @@ func (feed *Feed) parseTxtFile(reader io.Reader, fileName string) (err error) {
 				fromStop.Transfers[transfer.ToStopId] = transfer
 				feed.TranfersCount = feed.TranfersCount + 1
 			} else {
-				log.Println("Ignoring bad transfer:", transfer)
+				log.Println(feed.path, "Ignoring bad transfer:", transfer)
 			}
 		})
 		if err != nil {
