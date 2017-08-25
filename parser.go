@@ -10,6 +10,12 @@ import (
 	"log"
 )
 
+const (
+	bom0 = 0xef
+	bom1 = 0xbb
+	bom2 = 0xbf
+)
+
 type Parser string
 
 type ParseError struct {
@@ -32,6 +38,18 @@ func fieldsSetter(model settableThroughField, fieldKeys, fieldValues []string) {
 	}
 }
 
+
+func cleanBOM(b []byte) []byte {
+	if len(b) >= 3 &&
+		b[0] == bom0 &&
+		b[1] == bom1 &&
+		b[2] == bom2 {
+		return b[3:]
+	}
+	return b
+}
+
+
 func (p *Parser) parse(r io.Reader, recordHandler func(k, v []string)) error {
 
 	lineNumber := 1
@@ -47,6 +65,8 @@ func (p *Parser) parse(r io.Reader, recordHandler func(k, v []string)) error {
 	} else if isPrefix {
 		return errors.New(fmt.Sprintf("First line too long (not handled yet, oups): \"%v\"", p))
 	}
+
+	firstline = cleanBOM(firstline)
 
 	fieldKeys, perr := p.parseLine(firstline)
 	if perr != nil {
