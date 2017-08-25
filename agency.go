@@ -1,9 +1,5 @@
 package gtfs
 
-import (
-// "log"
-)
-
 // agency.txt
 type Agency struct {
 

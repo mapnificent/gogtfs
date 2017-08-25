@@ -38,7 +38,6 @@ func fieldsSetter(model settableThroughField, fieldKeys, fieldValues []string) {
 	}
 }
 
-
 func cleanBOM(b []byte) []byte {
 	if len(b) >= 3 &&
 		b[0] == bom0 &&
@@ -48,7 +47,6 @@ func cleanBOM(b []byte) []byte {
 	}
 	return b
 }
-
 
 func (p *Parser) parse(r io.Reader, recordHandler func(k, v []string)) error {
 
