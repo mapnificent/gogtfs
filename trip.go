@@ -57,6 +57,9 @@ type Trip struct {
 	// See DirectionIn/Out constants
 	Direction byte
 
+	// Check if direction is set
+	HasDirection bool
+
 	// block_id - Optional. The block_id field identifies the block to which the trip belongs. A block consists of two
 	// or more sequential trips made using the same vehicle, where a passenger can transfer from one trip to the next just
 	// by staying in the vehicle. The block_id must be referenced by two or more trips in trips.txt.
@@ -304,6 +307,7 @@ func (t *Trip) setField(fieldName, val string) {
 		t.ShortName = val
 		break
 	case "direction_id":
+		t.HasDirection = true
 		v, _ := strconv.Atoi(val) // Should panic on error !
 		if v == 0 {
 			t.Direction = DirectionOut
