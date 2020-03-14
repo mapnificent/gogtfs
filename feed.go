@@ -11,7 +11,7 @@ import (
 	// "bufio"
 	"time"
 	// "fmt"
-	// "strings"
+	"strings"
 )
 
 type Feed struct {
@@ -92,24 +92,24 @@ func (f *Feed) Load() error {
 		}
 
 		// Sort for loading dependencies
-		fileIndexes := make([]int, len(zipReader.File))
+		fileMap := make(map[string]int)
 		for _, f := range filenames[:] {
 			for i, zf := range zipReader.File[:] {
-				if zf.FileHeader.Name == f {
-					fileIndexes = append(fileIndexes, i)
+				if strings.HasSuffix(zf.FileHeader.Name, f) {
+					fileMap[f] = i
 				}
 			}
 		}
-
+		log.Println(fileMap)
 		// Open and parse files
-		for _, fileIndex := range fileIndexes {
+		for name, fileIndex := range fileMap {
 			reader, err := zipReader.File[fileIndex].Open()
 			if err != nil {
 				log.Println(err)
 				err = nil
 			}
-
-			err = f.parseTxtFile(reader, zipReader.File[fileIndex].FileHeader.Name)
+			log.Println("Parsing", zipReader.File[fileIndex].FileHeader.Name, "as", name)
+			err = f.parseTxtFile(reader, name)
 			if err != nil {
 				log.Println(err)
 			}
