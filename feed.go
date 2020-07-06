@@ -101,8 +101,8 @@ func (f *Feed) Load() error {
 			}
 		}
 		log.Println(fileMap)
-		// Open and parse files
-		for name, fileIndex := range fileMap {
+		for _, name := range filenames[:] {
+			fileIndex := fileMap[name]
 			reader, err := zipReader.File[fileIndex].Open()
 			if err != nil {
 				log.Println(err)
